@@ -1,29 +1,34 @@
-// pages/index.tsx
-
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
+import Image from 'next/image';
 import styles from '../styles.module.css';
+import cookieImage from '../public/cookie.png';
 
-const Page = () => {
-  const [currentTime, setCurrentTime] = useState<string>('');
+export default function Page() {
+  const [clickCount, setClickCount] = useState(0);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const now = new Date();
-      const hours = now.getHours().toString().padStart(2, '0');
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      const seconds = now.getSeconds().toString().padStart(2, '0');
-      setCurrentTime(`${hours}:${minutes}:${seconds}`);
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, []);
+  const handleImageClick = () => {
+    setClickCount(clickCount + 1);
+  };
 
   return (
-    
     <div className={styles.container}>
-      <h1 className={styles.clock}>Horário de Brasília: {currentTime}</h1>
+      <h1 className={styles.title}>Cookie Clicker em Next.js</h1>
+      <br />
+      <Image
+        src={cookieImage}
+        alt="Clique na imagem"
+        width={200}
+        height={200}
+        onClick={handleImageClick}
+        className={`${styles['clickable-image']} ${clickCount > 0 ? styles['clicked'] : ''}`}
+        loading="lazy"
+      />
+      <br />
+      <div className={styles['flex']}>
+        <p className={styles['click-quant']}>Quantidade de Cliques:</p> 
+        <p className={styles['click-count']}>{clickCount}</p>
+      </div>
+      
     </div>
   );
-};
-
-export default Page;
+}
